@@ -21,9 +21,6 @@ software without specific prior written permission.
 ===========================================================================
 */
 const webpackMerge = require("webpack-merge");
-const postcssUrl = require("postcss-url");
-const _ = require("lodash");
-
 const customWebpackConfig = require("./custom-webpack.config.js");
 
 /**
@@ -31,45 +28,6 @@ const customWebpackConfig = require("./custom-webpack.config.js");
  * @param defaultWebpackConfig Angular's default webpack config
  */
 module.exports = function(defaultWebpackConfig) {
-  // Use postcss-url to inline woff2 and svg files
-  _.each(defaultWebpackConfig.module.rules, rule => {
-    if (rule.loader === require.resolve('file-loader')) {
-      // We'll use raw-loader for svg
-      rule.test = /\.(eot|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)$/;
-      return;
-    }
-    _.each(rule.use, usedLoader => {
-      if (usedLoader.loader !== require.resolve('postcss-loader')) {
-        return;
-      }
-      const pluginsCreator = _.get(usedLoader, "options.postcssOptions");
-      if (pluginsCreator && typeof pluginsCreator === "function") {
-        usedLoader.options.postcssOptions = loader => {
-          const created = pluginsCreator(loader);
-          // inline the woff2 fonts and svg images in css
-          created.plugins.unshift(
-            postcssUrl({
-              filter: asset => {
-                return (
-                  asset.absolutePath.endsWith(".woff") ||
-                  asset.absolutePath.endsWith(".woff2") ||
-                  asset.absolutePath.endsWith(".svg")
-                );
-              },
-              url: "inline",
-              // NOTE: maxSize is in KB
-              maxSize: 100,
-              fallback: "rebase"
-            })
-          );
-          return created;
-        };
-      }
-    });
-  });
-
-  // Merge webpack config
   const mergedConfig = webpackMerge.merge(defaultWebpackConfig, customWebpackConfig);
-
   return mergedConfig;
 };

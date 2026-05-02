@@ -115,7 +115,7 @@ export class MaintenanceService implements OnDestroy {
     }
 
     this.userSessionsCache[username] =
-      Date.now() + ms(percyConfig.loginSessionTimeout);
+      Date.now() + Number(ms(percyConfig.loginSessionTimeout));
     this.userSessions$.next(this.userSessionsCache);
 
     return principal;
@@ -155,7 +155,7 @@ export class MaintenanceService implements OnDestroy {
     // Update user sessions cache
     this.userSessionsCache = this.userSessionsCache || {};
     this.userSessionsCache[username] =
-      Date.now() + ms(percyConfig.loginSessionTimeout);
+      Date.now() + Number(ms(percyConfig.loginSessionTimeout));
     this.userSessions$.next(this.userSessionsCache);
 
     // Update user names cache

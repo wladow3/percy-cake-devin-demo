@@ -31,7 +31,7 @@ import * as _ from "lodash";
 
 import { percyConfig, electronApi } from "config";
 import { Authenticate } from "models/auth";
-import * as filesystem from "filesystem";
+import filesystem from "filesystem";
 
 import { YamlService } from "./yaml.service";
 

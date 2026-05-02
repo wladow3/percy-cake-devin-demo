@@ -3,24 +3,24 @@
   "compilerOptions": {
     "baseUrl": "./src/app/",
     "outDir": "./dist/out-tsc",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "sourceMap": true,
     "declaration": false,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "downlevelIteration": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "target": "ES2022",
+    "useDefineForClassFields": false,
+    "skipLibCheck": true,
     "typeRoots": [
       "../../node_modules/@types"
     ],
     "lib": [
-      "es2018",
+      "ES2022",
       "dom"
     ]
   }

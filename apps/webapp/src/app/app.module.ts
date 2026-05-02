@@ -22,7 +22,7 @@ software without specific prior written permission.
 */
 
 import { NgModule } from "@angular/core";
-import { HttpClientModule } from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { EffectsModule } from "@ngrx/effects";
@@ -81,7 +81,6 @@ import { EditorEffects } from "store/affects/editor.effects";
     MarkdownEditorComponent
   ],
   imports: [
-    HttpClientModule,
     MarkdownModule.forRoot(),
     AppRoutingModule,
     CommonModule,
@@ -101,12 +100,7 @@ import { EditorEffects } from "store/affects/editor.effects";
       EditorEffects
     ])
   ],
-  entryComponents: [
-    CreateBranchDialogComponent,
-    CommitDialogComponent,
-    SelectAppDialogComponent,
-    ConflictDialogComponent
-  ],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

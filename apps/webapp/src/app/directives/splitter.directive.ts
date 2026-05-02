@@ -35,6 +35,7 @@ import { Subject, Subscription } from "rxjs";
 import Split from "split.js/dist/split.es.js";
 
 @Directive({
+  standalone: false,
   selector: "[appSplit]"
 })
 export class SplitDirective implements OnDestroy {
@@ -128,6 +129,7 @@ export class SplitDirective implements OnDestroy {
 }
 
 @Directive({
+  standalone: false,
   selector: "[appSplitArea]"
 })
 export class SplitAreaDirective implements OnInit {

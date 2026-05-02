@@ -14,101 +14,97 @@ See the License for the specific language governing permissions and
 limitations under the License.
 See the LICENSE file for additional language around disclaimer of warranties.
 
-Trademark Disclaimer: Neither the name of “T-Mobile, USA” nor the names of
+Trademark Disclaimer: Neither the name of "T-Mobile, USA" nor the names of
 its contributors may be used to endorse or promote products derived from this
 software without specific prior written permission.
 ===========================================================================
 */
 
-import { Directive, Inject, Optional, ElementRef, HostBinding } from "@angular/core";
-import { DomSanitizer } from "@angular/platform-browser";
+import { Directive, ElementRef, Input, OnChanges } from "@angular/core";
 import { animationFrameScheduler } from "rxjs";
 import * as cheerio from "cheerio";
-import { HIGHLIGHT_OPTIONS, HighlightOptions, Highlight, HighlightJS, HighlightResult } from "ngx-highlightjs";
+import { HighlightJS } from "ngx-highlightjs";
 import { YamlService } from "services/yaml.service";
 
 /**
- * Extend the Highlight directive to color the variable reference specially.
+ * Custom highlight directive that colors variable references.
  */
 @Directive({
+  standalone: false,
   selector: "[appHighlight]"
 })
-export class HighlightDirective extends Highlight {
-  @HostBinding("class.hljs") hljsClass = true;
+export class HighlightDirective implements OnChanges {
 
-  /**
-   * Construct the component.
-   *
-   * @param hljs The HighlightJS service
-   * @param zone NgZone
-   * @param yamlService the util service
-   */
-  constructor(private el: ElementRef, hljs: HighlightJS, sanitizer: DomSanitizer,
-    @Optional() @Inject(HIGHLIGHT_OPTIONS) _options: HighlightOptions, yamlService: YamlService) {
-    super(el, hljs, sanitizer, _options);
+  @Input("appHighlight") code: string;
+  @Input() language = "yaml";
 
-    this.highlighted.subscribe((res: HighlightResult) => {
-      let code = res.value;
+  constructor(
+    private el: ElementRef,
+    private hljs: HighlightJS,
+    private yamlService: YamlService
+  ) {}
 
-      if (res.language !== "yaml") {
+  ngOnChanges() {
+    this.highlightCode();
+  }
+
+  private async highlightCode() {
+    if (!this.code) {
+      return;
+    }
+
+    const result = await this.hljs.highlight(this.code, { language: this.language });
+
+    let html = result.value;
+
+    if (this.language === "yaml") {
+      html = this.postProcessYaml(html);
+    }
+
+    animationFrameScheduler.schedule(() =>
+      this.el.nativeElement.innerHTML = html || ""
+    );
+  }
+
+  private postProcessYaml(code: string): string {
+    const $ = cheerio.load(code);
+
+    const numSpans = $("span.hljs-number");
+    numSpans.each((_idx, span) => {
+      if (
+        !span.prev ||
+        !span.prev.prev ||
+        !(span.prev.prev as any).firstChild ||
+        ((span.prev.prev as any).firstChild.data !== "!!int" &&
+        (span.prev.prev as any).firstChild.data !== "!!float")
+      ) {
+        $(span)
+          .removeClass("hljs-number")
+          .addClass("hljs-attr");
+      }
+    });
+
+    const stringSpans = $("span.hljs-string");
+    stringSpans.each((_idx, span) => {
+      const spanNode = $(span);
+
+      if (
+        !span.prev ||
+        !span.prev.prev ||
+        !(span.prev.prev as any).firstChild ||
+        (span.prev.prev as any).firstChild.data !== "!!str"
+      ) {
+        spanNode.removeClass("hljs-string").addClass("hljs-attr");
         return;
       }
 
-      const $ = cheerio.load(code);
-
-      // fix tag category incorrectly assigned by highlightjs
-      const numSpans = $("span.hljs-number");
-      numSpans.each((_idx, span) => {
-        if (
-          !span.prev ||
-          !span.prev.prev ||
-          !(span.prev.prev as any).firstChild ||
-          ((span.prev.prev as any).firstChild.data !== "!!int" &&
-          (span.prev.prev as any).firstChild.data !== "!!float")
-        ) {
-          $(span)
-            .removeClass("hljs-number")
-            .addClass("hljs-attr");
-        }
-      });
-
-      const stringSpans = $("span.hljs-string");
-      stringSpans.each((_idx, span) => {
-        const spanNode = $(span);
-
-        // Check it really repsents a string value else correct the tag category
-        if (
-          !span.prev ||
-          !span.prev.prev ||
-          !(span.prev.prev as any).firstChild ||
-          (span.prev.prev as any).firstChild.data !== "!!str"
-        ) {
-          spanNode.removeClass("hljs-string").addClass("hljs-attr");
-          return;
-        }
-
-        // Highlight the color the variable reference
-        const text = spanNode.text();
-        const newSpan = yamlService.highlightVariable(text, spanNode);
-        if (newSpan !== spanNode) {
-          spanNode.replaceWith(newSpan);
-        }
-      });
-
-      code = $.html();
-      animationFrameScheduler.schedule(() =>
-        this.el.nativeElement.innerHTML = code || ""
-      );
+      const text = spanNode.text();
+      const newSpan = this.yamlService.highlightVariable(text, spanNode);
+      if (newSpan !== spanNode) {
+        spanNode.replaceWith(newSpan);
+      }
     });
-  }
 
-  /**
-   * Highlight the yaml code. We override this method to ensure a non-null code is passed in.
-   *
-   * @param code The yaml code
-   * @param languages The yaml languages
-   */
-  highlightElement(code, languages) {
-    super.highlightElement(code || "", languages);
+    return $.html();
   }
 }

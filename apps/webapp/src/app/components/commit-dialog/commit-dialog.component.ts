@@ -32,6 +32,7 @@ import { NotEmpty } from "services/validators";
  * The commit dialog component
  */
 @Component({
+  standalone: false,
   selector: "app-commit-dialog",
   templateUrl: "./commit-dialog.component.html",
   styleUrls: ["./commit-dialog.component.scss"]
