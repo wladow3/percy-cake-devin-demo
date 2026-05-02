@@ -44,4 +44,4 @@ testem.log
 .DS_Store
 Thumbs.db
 
-cors-proxy.pid
+cors-proxy.pid.angular/
