@@ -21,7 +21,15 @@ software without specific prior written permission.
 ===========================================================================
 */
 
+const webpack = require("webpack");
+
 module.exports = {
+  plugins: [
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+      Buffer: ["buffer", "Buffer"],
+    }),
+  ],
   resolve: {
     alias: {
       fs: "filesystem" // see webapp/src/app/filesystem

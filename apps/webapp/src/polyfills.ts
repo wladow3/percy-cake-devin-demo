@@ -80,6 +80,13 @@ software without specific prior written permission.
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
+ // Node.js polyfills for browser environment
+ import * as process from "process";
+ import { Buffer } from "buffer";
+ (window as any).process = process;
+ (window as any).Buffer = Buffer;
+ (window as any).global = window;
+
  import "zone.js";  // Included with Angular CLI.
 
 
