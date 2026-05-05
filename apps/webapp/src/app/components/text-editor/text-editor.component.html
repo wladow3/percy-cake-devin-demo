@@ -23,7 +23,7 @@
 <div class="col-container" *ngIf="isPercyrcFile">
   <ng-container *ngIf="!showFileEditor">
     <mat-card class="file-content">
-      <pre><code appHighlight [highlight]="fileContent" [languages]="['json']"></code></pre>
+      <pre><code [appHighlight]="fileContent" [language]="'json'"></code></pre>
     </mat-card>
   </ng-container>
 
