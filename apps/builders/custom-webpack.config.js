@@ -15,33 +15,59 @@ See the License for the specific language governing permissions and
 limitations under the License.
 See the LICENSE file for additional language around disclaimer of warranties.
 
-Trademark Disclaimer: Neither the name of “T-Mobile, USA” nor the names of
+Trademark Disclaimer: Neither the name of "T-Mobile, USA" nor the names of
 its contributors may be used to endorse or promote products derived from this
 software without specific prior written permission.
 ===========================================================================
 */
 
+const webpack = require("webpack");
+
 module.exports = {
   resolve: {
     alias: {
       fs: "filesystem" // see webapp/src/app/filesystem
-    }
+    },
+    fallback: {
+      path: require.resolve("path-browserify"),
+      buffer: require.resolve("buffer/"),
+      process: require.resolve("process/browser"),
+      stream: require.resolve("stream-browserify"),
+      util: false,
+      assert: false,
+      crypto: false,
+      os: false,
+      http: false,
+      https: false,
+      zlib: false,
+      url: false,
+      net: false,
+      tls: false,
+      child_process: false,
+      "graceful-fs": false
+    },
+    // Allow Webpack 5 to resolve modules that don't have proper exports field
+    conditionNames: ["import", "require", "default"]
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+      Buffer: ["buffer", "Buffer"]
+    }),
+    new webpack.NormalModuleReplacementPlugin(
+      /graceful-fs/,
+      require.resolve("fs")
+    )
+  ],
   module: {
     rules: [
       {
         test: /\.svg$/,
-        loader: "raw-loader"
+        type: "asset/source"
       }
     ]
   },
   optimization: {
     runtimeChunk: false // This will embed webpack runtime chunk in the single bundle
-  },
-  node: {
-    process: true,
-    path: true,
-    buffer: true,
-    Buffer: true
   }
 };

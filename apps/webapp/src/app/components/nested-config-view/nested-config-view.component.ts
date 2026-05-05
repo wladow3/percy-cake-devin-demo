@@ -52,6 +52,7 @@ import { YamlService } from "services/yaml.service";
  *  Tree with nested nodes
  */
 @Component({
+  standalone: false,
   selector: "app-nested-config-view",
   templateUrl: "./nested-config-view.component.html",
   styleUrls: ["./nested-config-view.component.scss"],
@@ -558,7 +559,7 @@ export class NestedConfigViewComponent implements OnChanges {
     const dataSource = env === "default" ? this.defaultDataSource : this.envDataSource;
     const viewport = env === "default" ? this.defaultViewport : this.envViewport;
 
-    const nodeIndex = _.findIndex(dataSource._flattenedData.value, flatNode =>
+    const nodeIndex = _.findIndex((dataSource as any)._flattenedData.value, (flatNode: any) =>
       flatNode.parent && flatNode.parent.key === env
       && flatNode.key === node.key && flatNode.getLevel() === node.getLevel()
     );

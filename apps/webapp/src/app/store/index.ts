@@ -65,7 +65,7 @@ export const clearState = (reducer) => (state, action) => {
 export const metaReducers: MetaReducer<AppState>[] = [localStorageSyncReducer, clearState];
 
 // dashboard related selectors
-export const authState = createFeatureSelector<AppState, fromAuth.State>("auth");
+export const authState = createFeatureSelector<fromAuth.State>("auth");
 
 export const getFormProcessing = createSelector(authState, fromAuth.getFormProcessing);
 export const getCurrentUser = createSelector(authState, fromAuth.getCurrentUser);
@@ -73,7 +73,7 @@ export const getRedirectUrl = createSelector(authState, fromAuth.getRedirectUrl)
 export const getLoginError = createSelector(authState, fromAuth.getError);
 
 // backend related selectors
-export const backendState = createFeatureSelector<AppState, fromBackend.State>("backend");
+export const backendState = createFeatureSelector<fromBackend.State>("backend");
 export const getPrincipal = createSelector(backendState, fromBackend.getPrincipal);
 export const getApplications = createSelector(backendState, fromBackend.getApplications);
 export const getAppConfigs = createSelector(backendState, fromBackend.getAppConfigs);
@@ -83,7 +83,7 @@ export const getCanSyncMaster = createSelector(backendState, fromBackend.getCanS
 export const getLoadingFiles = createSelector(backendState, fromBackend.isLoadingFiles);
 
 // dashboard related selectors
-export const dashboardState = createFeatureSelector<AppState, fromDashboard.State>("dashboard");
+export const dashboardState = createFeatureSelector<fromDashboard.State>("dashboard");
 export const getSelectedApp = createSelector(dashboardState, fromDashboard.getSelectedApp);
 export const getCollapsedApps = createSelector(dashboardState, fromDashboard.getCollapsedApps);
 export const getTableSort = createSelector(dashboardState, fromDashboard.getTableSort);
@@ -92,7 +92,7 @@ export const getDashboardCommittingFile = createSelector(dashboardState, fromDas
 export const getDashboardRefreshing = createSelector(dashboardState, fromDashboard.isRefreshing);
 
 // editor selectors
-export const editorState = createFeatureSelector<AppState, fromEditor.State>("editor");
+export const editorState = createFeatureSelector<fromEditor.State>("editor");
 
 export const getConfigFile = createSelector(editorState, fromEditor.getConfigFile);
 export const getConfiguration = createSelector(editorState, fromEditor.getConfiguration);

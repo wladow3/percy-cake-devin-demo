@@ -37,6 +37,7 @@ import { FileManagementService } from "services/file-management.service";
 import { CreateBranchDialogComponent } from "components/create-branch-dialog/create-branch-dialog.component";
 
 @Component({
+  standalone: false,
   selector: "app-main-header",
   templateUrl: "./main-header.component.html",
   styleUrls: ["./main-header.component.scss"]

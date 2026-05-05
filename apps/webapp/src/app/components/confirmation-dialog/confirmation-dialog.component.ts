@@ -28,6 +28,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
  * The confirm dialog component
  */
 @Component({
+  standalone: false,
   selector: "app-confirmation-dialog",
   templateUrl: "./confirmation-dialog.component.html",
   styleUrls: ["./confirmation-dialog.component.scss"]

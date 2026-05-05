@@ -5,7 +5,7 @@
   <!-- repo info -->
   <div class="repo-info">
     <div class="info-text" *ngIf="(currentUser|async)?.branchName === 'master'">The master branch is read only.</div>
-    <h4>{{(currentUser|async)?.repoName}} @</h4>
+    <h4>{{(currentUser|async)?.repoName}} &#64;</h4>
     <button
       mat-button color="primary"
       [matMenuTriggerFor]="branchesMenu"

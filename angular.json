@@ -69,14 +69,14 @@
     }
   },
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": ["@angular-eslint/schematics"]
   },
   "schematics": {
-    "@nrwl/angular:application": {
+    "@nx/angular:application": {
       "unitTestRunner": "none",
       "e2eTestRunner": "none"
     },
-    "@nrwl/angular:library": {
+    "@nx/angular:library": {
       "unitTestRunner": "none"
     }
   },

@@ -21,8 +21,6 @@ software without specific prior written permission.
 ===========================================================================
 */
 
-import { of } from "rxjs";
-
 import { NgModule } from "@angular/core";
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
@@ -45,10 +43,6 @@ import {
   SplitAreaDirective
 } from "directives/splitter.directive";
 import { HighlightDirective } from "directives/highlight.directive";
-
-const highlightjs = { default: require("highlight.js/lib/core") };
-const yamlLang = { default: require("highlight.js/lib/languages/yaml") };
-const jsonLang = { default: require("highlight.js/lib/languages/json") };
 
 @NgModule({
   declarations: [
@@ -76,15 +70,14 @@ const jsonLang = { default: require("highlight.js/lib/languages/json") };
     BrowserModule,
     MaterialComponentsModule
   ],
-  entryComponents: [ConfirmationDialogComponent, AlertDialogComponent],
   providers: [
     {
       provide: HIGHLIGHT_OPTIONS,
       useValue: {
-        coreLibraryLoader: () => of(highlightjs),
+        coreLibraryLoader: () => import("highlight.js/lib/core"),
         languages: {
-          yaml: () => of(yamlLang),
-          json: () => of(jsonLang)
+          yaml: () => import("highlight.js/lib/languages/yaml"),
+          json: () => import("highlight.js/lib/languages/json")
         }
       }
     },

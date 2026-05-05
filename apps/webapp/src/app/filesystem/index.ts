@@ -28,7 +28,6 @@ software without specific prior written permission.
  *
  * @see custom-webpack.config.js
  */
-import * as legacy from "graceful-fs/legacy-streams";
 import { FileSystem } from "filer/src";
 import * as Git from "isomorphic-git";
 import * as uuid from "uuid/v4";
@@ -39,10 +38,10 @@ import { CacheStorage } from "./storage";
 
 let filerFS; // The Filer fs implementation to delegate to
 
-const git = { ...Git };
+const gitObj = { ...Git };
 
 const ShimFS = {
-  git,
+  git: gitObj,
 
   /**
    * Initialize the filesystem.
@@ -75,7 +74,7 @@ const ShimFS = {
           shimContext("openReadWriteContext");
           shimContext("openReadOnlyContext");
 
-          git.plugins.set("fs", ShimFS as any);
+          gitObj.plugins.set("fs", ShimFS as any);
 
           resolve();
         }
@@ -150,9 +149,7 @@ const ShimFS = {
   };
 });
 
-// Patch stream
-const streams = legacy(ShimFS);
-ShimFS["ReadStream"] = streams.ReadStream;
-ShimFS["WriteStream"] = streams.WriteStream;
-
-export = ShimFS;
+export default ShimFS;
+export const git = ShimFS.git;
+export const initialize = ShimFS.initialize;
+export const initialized = ShimFS.initialized;

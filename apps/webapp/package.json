@@ -4,7 +4,7 @@
   "repository": "https://github.com/tmobile/percy-cake",
   "scripts": {
     "start": "cors-proxy stop && cors-proxy start -d -p 9999 && ng serve",
-    "build:prod": "cross-env NODE_ENV=prod ng build --prod && grunt --gruntfile ../builders/grunt.js build:webapp",
+    "build:prod": "cross-env NODE_ENV=prod ng build --configuration production && grunt --gruntfile ../builders/grunt.js build:webapp",
     "test": "cross-env NODE_ENV=test ng test",
     "lint": "ng lint"
   },

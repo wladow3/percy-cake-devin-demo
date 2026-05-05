@@ -36,6 +36,7 @@ import { percyConfig } from "config";
  * The select app dialog component
  */
 @Component({
+  standalone: false,
   selector: "app-select-dialog",
   templateUrl: "./select-app-dialog.component.html",
   styleUrls: ["./select-app-dialog.component.scss"]

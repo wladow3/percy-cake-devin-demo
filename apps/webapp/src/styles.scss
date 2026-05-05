@@ -15,19 +15,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 See the LICENSE file for additional language around disclaimer of warranties.
 
-Trademark Disclaimer: Neither the name of “T-Mobile, USA” nor the names of
+Trademark Disclaimer: Neither the name of "T-Mobile, USA" nor the names of
 its contributors may be used to endorse or promote products derived from this
 software without specific prior written permission.
 ===========================================================================
 */
 
-@import '~highlight.js/styles/default.css';
+@use '@angular/material' as mat;
 
-// material theme - it can be replaced by any other prebuilt theme or a custom theme
-@import '~@angular/material/theming';
+@import 'highlight.js/styles/default.css';
 
 // always include only once per project
-@include mat-core();
+@include mat.core();
 
 // import our default theme
 @import './themes/default-theme.scss';
@@ -35,7 +34,7 @@ software without specific prior written permission.
 // specify theme class eg: <body class="my-theme"> ... </body>
 .default-theme {
   // use our theme with angular-material-theme mixin
-  @include angular-material-theme($default-theme);
+  @include mat.all-component-themes($default-theme);
 }
 
 // global styles

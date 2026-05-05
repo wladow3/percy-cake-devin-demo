@@ -31,11 +31,11 @@ import * as _ from "lodash";
 
 import { percyConfig, electronApi } from "config";
 import { Authenticate } from "models/auth";
-import * as filesystem from "filesystem";
+import { git as fsGit, initialized, initialize } from "filesystem";
 
 import { YamlService } from "./yaml.service";
 
-export const git = filesystem.git;
+export const git = fsGit;
 export type FS = typeof fs;
 
 /**
@@ -80,13 +80,13 @@ export class UtilService extends YamlService {
    * Get browser filesytem.
    */
   async getBrowserFS() {
-    if (filesystem.initialized()) {
+    if (initialized()) {
       return fs;
     }
 
     await this.initConfig();
 
-    await filesystem.initialize();
+    await initialize();
 
     await fs.ensureDir(percyConfig.reposFolder);
     await fs.ensureDir(percyConfig.draftFolder);

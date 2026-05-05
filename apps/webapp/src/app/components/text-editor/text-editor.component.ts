@@ -15,6 +15,7 @@ import { NotEmpty } from "services/validators";
 
 
 @Component({
+  standalone: false,
   selector: "app-text-editor",
   templateUrl: "./text-editor.component.html",
   styleUrls: ["./text-editor.component.scss"]
