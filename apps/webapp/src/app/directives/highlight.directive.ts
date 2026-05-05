@@ -42,7 +42,9 @@ export class HighlightDirective implements OnChanges {
     private el: ElementRef,
     private hljs: HighlightJS,
     private yamlService: YamlService
-  ) {}
+  ) {
+    this.el.nativeElement.classList.add("hljs");
+  }
 
   ngOnChanges() {
     this.highlightCode();
