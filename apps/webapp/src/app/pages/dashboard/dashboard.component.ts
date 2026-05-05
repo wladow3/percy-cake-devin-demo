@@ -69,6 +69,7 @@ const refreshIcon = require("../../../assets/icon-refresh.svg");
   Dashboard page
  */
 @Component({
+  standalone: false,
   selector: "app-dashboard",
   templateUrl: "./dashboard.component.html",
   styleUrls: ["./dashboard.component.scss"]

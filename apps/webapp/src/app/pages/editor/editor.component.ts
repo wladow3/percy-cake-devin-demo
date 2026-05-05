@@ -54,6 +54,7 @@ import { FileTypes } from "models/config-file";
   for both editing existing files and adding new ones
  */
 @Component({
+  standalone: false,
   selector: "app-editor-page",
   templateUrl: "./editor.component.html",
   styleUrls: ["./editor.component.scss"]

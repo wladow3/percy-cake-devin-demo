@@ -60,6 +60,7 @@ import { User } from "models/auth";
   for both editing existing files and adding new ones
  */
 @Component({
+  standalone: false,
   selector: "app-editor",
   templateUrl: "./editor.component.html",
   styleUrls: ["./editor.component.scss"]

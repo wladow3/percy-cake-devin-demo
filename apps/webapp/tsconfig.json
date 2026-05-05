@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./src/app/",
     "outDir": "./dist/out-tsc",
-    "module": "commonjs",
+    "module": "ES2022",
     "moduleResolution": "node",
     "importHelpers": true,
     "sourceMap": true,
@@ -15,12 +15,13 @@
     "forceConsistentCasingInFileNames": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "useDefineForClassFields": false,
+    "target": "ES2022",
     "typeRoots": [
       "../../node_modules/@types"
     ],
     "lib": [
-      "es2018",
+      "ES2022",
       "dom"
     ]
   }

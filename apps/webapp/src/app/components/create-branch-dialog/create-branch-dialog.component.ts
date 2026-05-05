@@ -33,6 +33,7 @@ import { TrimPattern } from "services/validators";
  * Create new branch dialog
  */
 @Component({
+  standalone: false,
   selector: "app-create-branch-dialog",
   templateUrl: "./create-branch-dialog.component.html",
   styleUrls: ["./create-branch-dialog.component.scss"]

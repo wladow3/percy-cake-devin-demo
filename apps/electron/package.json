@@ -8,7 +8,7 @@
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "start": "cors-proxy stop && cors-proxy start -d -p 9999 && ng serve",
-    "build:prod": "cross-env NODE_ENV=prod ng build --prod && tsc -p ./app && grunt --gruntfile ../builders/grunt.js build:electron",
+    "build:prod": "cross-env NODE_ENV=prod ng build --configuration production && tsc -p ./app && grunt --gruntfile ../builders/grunt.js build:electron",
     "package:win": "electron-builder -w",
     "package:linux": "electron-builder -l",
     "package:mac": "electron-builder -m",

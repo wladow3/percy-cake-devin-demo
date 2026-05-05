@@ -31,6 +31,7 @@ import { AlertClosed } from "store/actions/common.actions";
  * The alert dialog component
  */
 @Component({
+  standalone: false,
   selector: "app-alert-dialog",
   templateUrl: "./alert-dialog.component.html",
   styleUrls: ["./alert-dialog.component.scss"]

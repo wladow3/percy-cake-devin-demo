@@ -24,7 +24,7 @@ software without specific prior written permission.
 import { Router, ActivatedRoute } from "@angular/router";
 import { Type, NO_ERRORS_SCHEMA, Component } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { HttpClient } from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { Observable, isObservable, BehaviorSubject, Subscription, of } from "rxjs";
 import { Store, StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
@@ -55,9 +55,7 @@ declare let afterEach: (any) => any;
 
 const percyTestConfig = require("../../percy.conf.test.json");
 
-const highlightjs = { default: require("highlight.js/lib/core") };
-const yamlLang = { default: require("highlight.js/lib/languages/yaml") };
-const jsonLang = { default: require("highlight.js/lib/languages/json") };
+
 
 // Inject test config
 _.assign(percyConfig, percyTestConfig);
@@ -212,10 +210,10 @@ export const SETUP = <T>(componentType: Type<T>, triggerLifecyle: boolean = true
         {
           provide: HIGHLIGHT_OPTIONS,
           useValue: {
-            coreLibraryLoader: () => of(highlightjs),
+            coreLibraryLoader: () => import("highlight.js/lib/core"),
             languages: {
-              yaml: () => of(yamlLang),
-              json: () => of(jsonLang)
+              yaml: () => import("highlight.js/lib/languages/yaml"),
+              json: () => import("highlight.js/lib/languages/json")
             }
           }
         },

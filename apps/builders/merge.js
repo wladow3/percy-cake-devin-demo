@@ -15,12 +15,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 See the LICENSE file for additional language around disclaimer of warranties.
 
-Trademark Disclaimer: Neither the name of “T-Mobile, USA” nor the names of
+Trademark Disclaimer: Neither the name of "T-Mobile, USA" nor the names of
 its contributors may be used to endorse or promote products derived from this
 software without specific prior written permission.
 ===========================================================================
 */
-const webpackMerge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 const postcssUrl = require("postcss-url");
 const _ = require("lodash");
 
@@ -33,43 +33,52 @@ const customWebpackConfig = require("./custom-webpack.config.js");
 module.exports = function(defaultWebpackConfig) {
   // Use postcss-url to inline woff2 and svg files
   _.each(defaultWebpackConfig.module.rules, rule => {
-    if (rule.loader === require.resolve('file-loader')) {
-      // We'll use raw-loader for svg
-      rule.test = /\.(eot|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)$/;
+    // In Webpack 5, asset modules replace file-loader/raw-loader
+    if (rule.type === 'asset/resource' || rule.type === 'asset') {
       return;
     }
-    _.each(rule.use, usedLoader => {
-      if (usedLoader.loader !== require.resolve('postcss-loader')) {
-        return;
-      }
-      const pluginsCreator = _.get(usedLoader, "options.postcssOptions");
-      if (pluginsCreator && typeof pluginsCreator === "function") {
-        usedLoader.options.postcssOptions = loader => {
-          const created = pluginsCreator(loader);
-          // inline the woff2 fonts and svg images in css
-          created.plugins.unshift(
-            postcssUrl({
-              filter: asset => {
-                return (
-                  asset.absolutePath.endsWith(".woff") ||
-                  asset.absolutePath.endsWith(".woff2") ||
-                  asset.absolutePath.endsWith(".svg")
+    const ruleUse = rule.use || rule.oneOf;
+    if (Array.isArray(ruleUse)) {
+      _.each(ruleUse, usedLoader => {
+        const loader = usedLoader.use || [usedLoader];
+        if (!Array.isArray(loader)) return;
+        _.each(loader, innerLoader => {
+          if (!innerLoader.loader || !innerLoader.loader.includes('postcss-loader')) {
+            return;
+          }
+          const pluginsCreator = _.get(innerLoader, "options.postcssOptions");
+          if (pluginsCreator && typeof pluginsCreator === "function") {
+            const origFn = pluginsCreator;
+            innerLoader.options.postcssOptions = (...args) => {
+              const created = origFn(...args);
+              // inline the woff2 fonts and svg images in css
+              if (created && created.plugins) {
+                created.plugins.unshift(
+                  postcssUrl({
+                    filter: asset => {
+                      return (
+                        asset.absolutePath.endsWith(".woff") ||
+                        asset.absolutePath.endsWith(".woff2") ||
+                        asset.absolutePath.endsWith(".svg")
+                      );
+                    },
+                    url: "inline",
+                    // NOTE: maxSize is in KB
+                    maxSize: 100,
+                    fallback: "rebase"
+                  })
                 );
-              },
-              url: "inline",
-              // NOTE: maxSize is in KB
-              maxSize: 100,
-              fallback: "rebase"
-            })
-          );
-          return created;
-        };
-      }
-    });
+              }
+              return created;
+            };
+          }
+        });
+      });
+    }
   });
 
   // Merge webpack config
-  const mergedConfig = webpackMerge.merge(defaultWebpackConfig, customWebpackConfig);
+  const mergedConfig = merge(defaultWebpackConfig, customWebpackConfig);
 
   return mergedConfig;
 };

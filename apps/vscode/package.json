@@ -9,7 +9,7 @@
   "icon": "media/appicon.128x128.png",
   "main": "dist/extension",
   "scripts": {
-    "build:prod": "cross-env NODE_ENV=prod ng build --prod && tsc -p ./extension && grunt --gruntfile ../builders/grunt.js build:vscode",
+    "build:prod": "cross-env NODE_ENV=prod ng build --configuration production && tsc -p ./extension && grunt --gruntfile ../builders/grunt.js build:vscode",
     "package": "vsce package",
     "lint": "ng lint"
   },

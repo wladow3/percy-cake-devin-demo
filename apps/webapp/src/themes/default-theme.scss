@@ -1,12 +1,15 @@
+@use '@angular/material' as mat;
+
 // define 3 theme color
-// mat-palette accepts $palette-name, main, lighter and darker variants
-$default-theme-primary: mat-palette($mat-pink, A200);
-$default-theme-accent: mat-palette($mat-pink, 800);
-$default-theme-warn: mat-palette($mat-pink, A200);
+$default-theme-primary: mat.m2-define-palette(mat.$m2-pink-palette, A200);
+$default-theme-accent: mat.m2-define-palette(mat.$m2-pink-palette, 800);
+$default-theme-warn: mat.m2-define-palette(mat.$m2-pink-palette, A200);
 
 // create theme (use mat-dark-theme for themes with dark backgrounds)
-$default-theme: mat-light-theme(
-    $default-theme-primary,
-    $default-theme-accent,
-    $default-theme-warn
-);
+$default-theme: mat.m2-define-light-theme((
+    color: (
+        primary: $default-theme-primary,
+        accent: $default-theme-accent,
+        warn: $default-theme-warn
+    )
+));

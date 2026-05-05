@@ -31,6 +31,7 @@ import { ConfigFile, ConflictFile, FileTypes } from "models/config-file";
  * The conflict dialog component
  */
 @Component({
+  standalone: false,
   selector: "app-conflict-dialog",
   templateUrl: "./conflict-dialog.component.html",
   styleUrls: ["./conflict-dialog.component.scss"]
