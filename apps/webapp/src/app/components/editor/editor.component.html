@@ -37,7 +37,7 @@
     </div>
     <div class="preview" *ngIf="selectedNode || showAsCompiledYAMLEnvironment">
       <!-- shows the node as YAML for non-leaf node -->
-      <pre *ngIf="previewCode"><code #codeEle appHighlight [highlight]="previewCode" [languages]="['yaml']"></code></pre>
+      <pre *ngIf="previewCode"><code #codeEle [appHighlight]="previewCode" [language]="'yaml'"></code></pre>
       <!-- shows the leaf node as readonly label -->
       <div *ngIf="!previewCode" class="property">
         <div class="mat-form-field mat-form-field-appearance-legacy mat-form-field-disabled mat-form-field-can-float mat-form-field-should-float">

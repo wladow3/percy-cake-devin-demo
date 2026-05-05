@@ -15,27 +15,32 @@ See the License for the specific language governing permissions and
 limitations under the License.
 See the LICENSE file for additional language around disclaimer of warranties.
 
-Trademark Disclaimer: Neither the name of “T-Mobile, USA” nor the names of
+Trademark Disclaimer: Neither the name of "T-Mobile, USA" nor the names of
 its contributors may be used to endorse or promote products derived from this
 software without specific prior written permission.
 ===========================================================================
 */
 
+@use '@angular/material' as mat;
+
 @import '~highlight.js/styles/default.css';
 
-// material theme - it can be replaced by any other prebuilt theme or a custom theme
-@import '~@angular/material/theming';
+@include mat.core();
 
-// always include only once per project
-@include mat-core();
+$default-theme-primary: mat.m2-define-palette(mat.$m2-pink-palette, A200);
+$default-theme-accent: mat.m2-define-palette(mat.$m2-pink-palette, 800);
+$default-theme-warn: mat.m2-define-palette(mat.$m2-pink-palette, A200);
 
-// import our default theme
-@import './themes/default-theme.scss';
+$default-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $default-theme-primary,
+    accent: $default-theme-accent,
+    warn: $default-theme-warn
+  )
+));
 
-// specify theme class eg: <body class="my-theme"> ... </body>
 .default-theme {
-  // use our theme with angular-material-theme mixin
-  @include angular-material-theme($default-theme);
+  @include mat.all-component-themes($default-theme);
 }
 
 // global styles

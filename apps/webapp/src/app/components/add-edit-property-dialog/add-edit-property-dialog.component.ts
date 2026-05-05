@@ -48,6 +48,7 @@ import { NotEmpty } from "services/validators";
   and if its a custom environment then its a select dropdown
  */
 @Component({
+  standalone: false,
   selector: "app-add-edit-property-dialog",
   templateUrl: "./add-edit-property-dialog.component.html",
   styleUrls: ["./add-edit-property-dialog.component.scss"]

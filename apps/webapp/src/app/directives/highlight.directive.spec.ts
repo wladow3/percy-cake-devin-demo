@@ -31,7 +31,7 @@ const constructVar = utilService.constructVariable;
 
 @Component({
   template: `
-    <pre><code appHighlight [highlight]="previewCode" [languages]="['yaml']"></code></pre>
+    <pre><code [appHighlight]="previewCode" [language]="'yaml'"></code></pre>
   `
 })
 class TestHighlightComponent {

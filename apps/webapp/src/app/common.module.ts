@@ -76,7 +76,6 @@ const jsonLang = { default: require("highlight.js/lib/languages/json") };
     BrowserModule,
     MaterialComponentsModule
   ],
-  entryComponents: [ConfirmationDialogComponent, AlertDialogComponent],
   providers: [
     {
       provide: HIGHLIGHT_OPTIONS,

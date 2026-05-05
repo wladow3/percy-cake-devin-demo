@@ -25,6 +25,7 @@ import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 
 @Component({
+  standalone: false,
   selector: "app-loader",
   templateUrl: "./loader.component.html",
   styleUrls: ["./loader.component.scss"]

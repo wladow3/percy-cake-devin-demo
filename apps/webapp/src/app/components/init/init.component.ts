@@ -36,6 +36,7 @@ import { Initialized } from "store/actions/backend.actions";
 import { APIError } from "store/actions/common.actions";
 
 @Component({
+  standalone: false,
   selector: "app-init",
   templateUrl: "./init.component.html",
   styleUrls: ["./init.component.scss"]

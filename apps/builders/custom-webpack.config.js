@@ -21,27 +21,37 @@ software without specific prior written permission.
 ===========================================================================
 */
 
+const webpack = require("webpack");
+
 module.exports = {
+  plugins: [
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+      Buffer: ["buffer", "Buffer"],
+    }),
+  ],
   resolve: {
     alias: {
       fs: "filesystem" // see webapp/src/app/filesystem
+    },
+    fallback: {
+      path: require.resolve("path-browserify"),
+      buffer: require.resolve("buffer/"),
+      process: require.resolve("process/browser"),
+      stream: require.resolve("stream-browserify"),
+      os: require.resolve("os-browserify/browser"),
+      constants: require.resolve("constants-browserify"),
     }
   },
   module: {
     rules: [
       {
         test: /\.svg$/,
-        loader: "raw-loader"
+        type: "asset/source"
       }
     ]
   },
   optimization: {
     runtimeChunk: false // This will embed webpack runtime chunk in the single bundle
-  },
-  node: {
-    process: true,
-    path: true,
-    buffer: true,
-    Buffer: true
   }
 };
